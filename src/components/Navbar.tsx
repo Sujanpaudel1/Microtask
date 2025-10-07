@@ -57,15 +57,16 @@ export function Navbar() {
                             </span>
                         </button>
 
-                        {/* Profile Menu */}
-                        <div className="relative">
-                            <button className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors">
-                                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                                    <User className="w-4 h-4" />
-                                </div>
-                                <span>Profile</span>
-                            </button>
-                        </div>
+                        {/* Auth Links */}
+                        <Link href="/login" className="text-gray-700 hover:text-blue-600 transition-colors">
+                            Sign In
+                        </Link>
+                        <Link
+                            href="/signup"
+                            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                        >
+                            Sign Up
+                        </Link>
                     </div>
 
                     {/* Mobile menu button */}
@@ -104,6 +105,17 @@ export function Navbar() {
                                 <Plus className="w-4 h-4" />
                                 <span>Post Task</span>
                             </Link>
+                            <div className="flex space-x-4 pt-4 border-t">
+                                <Link href="/login" className="text-gray-700 hover:text-blue-600 transition-colors">
+                                    Sign In
+                                </Link>
+                                <Link
+                                    href="/signup"
+                                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                                >
+                                    Sign Up
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 )}

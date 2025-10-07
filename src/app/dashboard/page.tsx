@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { mockTasks } from '@/lib/mockData';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -17,10 +18,44 @@ import {
 
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState('overview');
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
-    // Mock user data
-    const user = {
-        name: 'Bikash Adhikari',
+    useEffect(() => {
+        // Check authentication on component mount
+        const checkAuth = async () => {
+            try {
+                const response = await fetch('/api/auth/verify');
+                if (response.ok) {
+                    const data = await response.json();
+                    setUser(data.user);
+                } else {
+                    // Not authenticated, redirect to login
+                    router.push('/login');
+                    return;
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                router.push('/login');
+                return;
+            }
+            setLoading(false);
+        };
+
+        checkAuth();
+    }, [router]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-lg">Loading...</div>
+            </div>
+        );
+    }
+
+    // Mock additional user data (extend the authenticated user data)
+    const mockUserStats = {
         type: 'client', // or 'freelancer'
         tasksPosted: 5,
         tasksCompleted: 3,
@@ -70,7 +105,7 @@ export default function Dashboard() {
                 {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900">
-                        Welcome back, {user.name}!
+                        Welcome back, {user?.name || 'User'}!
                     </h1>
                     <p className="text-gray-600 mt-2">
                         Here&apos;s an overview of your MicroTask activity
@@ -262,7 +297,7 @@ export default function Dashboard() {
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile</h3>
                             <div className="text-center">
                                 <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-3"></div>
-                                <h4 className="font-medium text-gray-900">{user.name}</h4>
+                                <h4 className="font-medium text-gray-900">{user?.name || 'User'}</h4>
                                 <p className="text-sm text-gray-600 capitalize">{user.type}</p>
 
                                 <div className="flex items-center justify-center space-x-1 mt-2">

@@ -2,6 +2,7 @@ export interface User {
     id: string;
     name: string;
     email: string;
+    password?: string; // Only used for authentication, never sent to client
     avatar?: string;
     rating: number;
     reviewCount: number;
@@ -9,6 +10,31 @@ export interface User {
     joinedDate: string;
     completedTasks: number;
     isVerified: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface AuthUser {
+    id: number;
+    name: string;
+    email: string;
+}
+
+export interface LoginRequest {
+    email: string;
+    password: string;
+}
+
+export interface SignupRequest {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export interface AuthResponse {
+    message: string;
+    user?: AuthUser;
+    error?: string;
 }
 
 export interface Task {
